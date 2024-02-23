@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -43,11 +44,8 @@ public class ThirdFragment extends Fragment {
         v = container;
             setSwitchColor(binding.switch1);
             setSwitchColor(binding.switch2);
-            setSwitchColor(binding.switch3);
         binding.switch2.setChecked(MainActivity.defense);
-        binding.switch3.setChecked(MainActivity.ground);
-        binding.switch3.setThumbTintList(blue);
-        binding.switch3.setTrackTintList(blue);
+
 
         return binding.getRoot();
     }
@@ -68,10 +66,8 @@ public class ThirdFragment extends Fragment {
         //VARIABLES
         Switch switch1 = view.findViewById(R.id.switch1);
         Switch switch2 = view.findViewById(R.id.switch2);
-        Switch switch3 = view.findViewById(R.id.switch3);
-        EditText numNotes = view.findViewById(R.id.numNotes);
-        EditText numNotesInAmp = view.findViewById(R.id.numNotesInAmp);
         Spinner Contact = view.findViewById(R.id.spinner);
+
 
         ObjectAnimator animation = ObjectAnimator.ofFloat(binding.pop, "rotationX", new float[]{0f, 90f, 180f, 270f, 360f, 90f, 180f, 270f, 360f, 90f, 180f, 270f, 360f});
         animation.setDuration(1000);
@@ -96,12 +92,7 @@ public class ThirdFragment extends Fragment {
                 setSwitchColor(binding.switch2);
             }
         });
-        binding.switch3.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)  {
-                setSwitchColor(binding.switch3);
-            }
-        });
+
         binding.toSecondFragment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -110,12 +101,46 @@ public class ThirdFragment extends Fragment {
                 //getting the value of variables when switching to teleop from auto
                 switch1.isChecked();
                 switch2.isChecked();
-                switch3.isChecked();
-                numNotes.getText();
-                numNotesInAmp.getText();
                 Contact.getSelectedItem();
             }
 
+        });
+        binding.notesInSpeakerPlus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (MainActivity.noteSuccess < 3){
+                    MainActivity.noteSuccess ++;
+                    binding.notesInSpeaker.setText("" + MainActivity.noteSuccess);
+                }
+            }
+        });
+        binding.notesInSpeakerMinus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (MainActivity.noteSuccess > 0){
+                    MainActivity.noteSuccess --;
+                    binding.notesInSpeaker.setText("" + MainActivity.noteSuccess);
+                }
+            }
+        });
+        binding.notesInAmpPlus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (MainActivity.noteSuccess < 3) {
+                    MainActivity.noteSuccess++;
+                    binding.notesInAmp.setText("" + MainActivity.noteSuccess);
+                }
+            }
+        });
+
+        binding.notesInAmpMinus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (MainActivity.noteSuccess > 0) {
+                    MainActivity.noteSuccess--;
+                    binding.notesInAmp.setText("" + MainActivity.noteSuccess);
+                }
+            }
         });
         String[] typeContact = {"No contact", "Teammate to Teammate", "Teammate to opponent"};
         ArrayAdapter<String> contact = new ArrayAdapter<>(view.getContext(), android.R.layout.simple_spinner_dropdown_item, typeContact);
@@ -126,8 +151,7 @@ public class ThirdFragment extends Fragment {
 
 
 
-        numNotes.getBackground().setColorFilter(Color.parseColor("#73C2F0"), PorterDuff.Mode.SRC_ATOP);
-        numNotesInAmp.getBackground().setColorFilter(Color.parseColor("#73C2F0"), PorterDuff.Mode.SRC_ATOP);
+
     }
     @Override
     public void onDestroyView() {
